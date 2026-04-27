@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ─── CSS Custom Properties ───────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* shadcn/ui tokens — dark aqua theme */
+    --background: 220 25% 8%;
+    --foreground: 195 20% 92%;
+
+    --card: 220 22% 11%;
+    --card-foreground: 195 20% 92%;
+
+    --popover: 220 22% 11%;
+    --popover-foreground: 195 20% 92%;
+
+    --primary: 185 80% 45%;
+    --primary-foreground: 220 25% 8%;
+
+    --secondary: 220 18% 16%;
+    --secondary-foreground: 195 20% 80%;
+
+    --muted: 220 18% 14%;
+    --muted-foreground: 220 10% 55%;
+
+    --accent: 185 60% 35%;
+    --accent-foreground: 195 20% 92%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 18% 18%;
+    --input: 220 18% 16%;
+    --ring: 185 80% 45%;
+
+    --radius: 0.75rem;
+
+    /* Sidebar tokens */
+    --sidebar-background: 220 28% 6%;
+    --sidebar-foreground: 195 20% 75%;
+    --sidebar-primary: 185 80% 45%;
+    --sidebar-primary-foreground: 220 25% 8%;
+    --sidebar-accent: 220 22% 12%;
+    --sidebar-accent-foreground: 195 20% 90%;
+    --sidebar-border: 220 20% 12%;
+    --sidebar-ring: 185 80% 45%;
+
+    /* Custom design tokens */
+    --glow-primary: 0 0 24px hsla(185, 80%, 45%, 0.35);
+    --glow-danger:  0 0 24px hsla(0, 72%, 51%, 0.35);
+    --glow-warn:    0 0 24px hsla(40, 92%, 55%, 0.35);
+    --glow-safe:    0 0 24px hsla(150, 70%, 45%, 0.35);
+  }
+}
+
+/* ─── Global Reset & Base ─────────────────────────────────────────────────── */
+@layer base {
+  * { @apply border-border; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -20%, hsla(185, 80%, 45%, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, hsla(220, 80%, 40%, 0.06) 0%, transparent 60%);
+    min-height: 100dvh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  code, kbd, pre {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* ─── Glassmorphism Utilities ─────────────────────────────────────────────── */
+@layer components {
+  .glass {
+    background: hsla(220, 25%, 10%, 0.7);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    border: 1px solid hsla(185, 40%, 40%, 0.12);
+  }
+
+  .glass-strong {
+    background: hsla(220, 25%, 8%, 0.85);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid hsla(185, 40%, 40%, 0.18);
+  }
+
+  /* Gradient border card */
+  .card-glow {
+    position: relative;
+    border-radius: var(--radius);
+    background: hsl(var(--card));
+  }
+  .card-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: calc(var(--radius) + 1px);
+    background: linear-gradient(135deg, hsla(185,80%,45%,0.3), transparent 50%, hsla(220,80%,40%,0.2));
+    z-index: -1;
+  }
+
+  /* Sidebar nav link */
+  .nav-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+           text-sidebar-foreground transition-all duration-200
+           hover:bg-sidebar-accent hover:text-sidebar-accent-foreground;
+  }
+  .nav-link.active {
+    @apply bg-sidebar-accent text-primary;
+    box-shadow: inset 2px 0 0 hsl(var(--primary));
+  }
+
+  /* Risk badges */
+  .badge-high   { @apply bg-red-500/15 text-red-400 border border-red-500/30; }
+  .badge-medium { @apply bg-amber-500/15 text-amber-400 border border-amber-500/30; }
+  .badge-low    { @apply bg-emerald-500/15 text-emerald-400 border border-emerald-500/30; }
+
+  /* Pulse ring for live indicators */
+  .pulse-dot {
+    @apply relative inline-block w-2.5 h-2.5 rounded-full;
+  }
+  .pulse-dot::after {
+    content: '';
+    @apply absolute inset-0 rounded-full animate-ping;
+    background: inherit;
+    opacity: 0.6;
+  }
+
+  /* Metric value display */
+  .metric-value {
+    @apply text-3xl font-bold tracking-tight tabular-nums;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ─── Animations ──────────────────────────────────────────────────────────── */
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+  }
+  .animate-slide-up {
+    animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .animate-slide-in-left {
+    animation: slideInLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .animate-scale-in {
+    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .stagger-1 { animation-delay: 0.05s; }
+  .stagger-2 { animation-delay: 0.10s; }
+  .stagger-3 { animation-delay: 0.15s; }
+  .stagger-4 { animation-delay: 0.20s; }
+  .stagger-5 { animation-delay: 0.25s; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Gauge arc stroke animation */
+@keyframes arcDraw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: var(--dash-offset, 0); }
+}
+.gauge-arc {
+  animation: arcDraw 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
