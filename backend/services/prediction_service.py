@@ -41,7 +41,7 @@ class PredictionService:
         return True
 
     @staticmethod
-    def run_prediction():
+    def run_prediction(water_source='Well', treatment_method='Boiling'):
         # 1. Fetch latest sensor data
         latest_sensor = SensorService.get_latest_data()
         if not latest_sensor:
@@ -52,7 +52,7 @@ class PredictionService:
             return {"error": "ML models not trained or found. Please run train_model.py first."}, 500
 
         # 3. Combine with static regional data
-        region_name = "North" # Default for now
+        region_name = "Harare" # Default for Zimbabwe
         region_info = RegionData.query.filter_by(region=region_name).first()
         
         if not region_info:
@@ -60,7 +60,9 @@ class PredictionService:
             reg_data = {
                 "sanitation": 50.0,
                 "healthcare_index": 50.0,
-                "population_density": 500.0
+                "population_density": 500.0,
+                "gdp_per_capita": 1500.0,
+                "urbanization_rate": 40.0
             }
         else:
             reg_data = region_info.to_dict()
@@ -77,17 +79,17 @@ class PredictionService:
             'Bacteria Count (CFU/mL)': 2500.0,
             'Access to Clean Water (% of Population)': 50.0,
             'Infant Mortality Rate (per 1,000 live births)': 40.0,
-            'GDP per Capita (USD)': 20000.0,
+            'GDP per Capita (USD)': reg_data['gdp_per_capita'],
             'Healthcare Access Index (0-100)': reg_data['healthcare_index'],
-            'Urbanization Rate (%)': 50.0,
+            'Urbanization Rate (%)': reg_data['urbanization_rate'],
             'Sanitation Coverage (% of Population)': reg_data['sanitation'],
             'Rainfall (mm per year)': 1000.0,
             'Temperature (°C)': latest_sensor.temperature,
             'Population Density (people per km²)': reg_data['population_density'],
-            'Country': 'Mexico', # Example from CSV
+            'Country': 'Zimbabwe',
             'Region': region_name,
-            'Water Source Type': 'Lake',
-            'Water Treatment Method': 'Filtration'
+            'Water Source Type': water_source,
+            'Water Treatment Method': treatment_method
         }
 
         # Align with training features

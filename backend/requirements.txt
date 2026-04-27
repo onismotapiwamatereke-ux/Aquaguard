@@ -1,6 +1,8 @@
 Flask
 Flask-SQLAlchemy
 Flask-Cors
+Flask-JWT-Extended
+Werkzeug
 pandas
 scikit-learn
 xgboost
