@@ -12,11 +12,11 @@ import { cn } from "@/lib/utils";
 import { useLatestSensor } from "@/hooks/useSensorHistory";
 
 const NAV_ITEMS = [
-  { to: "/",        label: "Dashboard",   icon: LayoutDashboard, end: true },
-  { to: "/sensor",  label: "Sensor Input", icon: Waves },
-  { to: "/predict", label: "AI Predict",   icon: Brain },
-  { to: "/history", label: "History",      icon: History },
-  { to: "/alerts",  label: "Alerts",       icon: Bell },
+  { to: "/",        label: "Dashboard",        icon: LayoutDashboard, end: true },
+  { to: "/sensor",  label: "Water Test Entry", icon: Waves },
+  { to: "/predict", label: "Safety Analysis",  icon: Brain },
+  { to: "/history", label: "History",          icon: History },
+  { to: "/alerts",  label: "Alerts",           icon: Bell },
 ];
 
 interface AppSidebarProps {

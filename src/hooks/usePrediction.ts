@@ -1,25 +1,25 @@
+import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { fetchPrediction } from "@/lib/api";
+import type { PredictionInput, PredictionResult } from "@/types";
 
-/** 
- * Hook to trigger and retrieve ML predictions.
- * Call `refetch()` to run a new prediction against the latest sensor data.
- */
-export function usePrediction() {
+export function usePrediction(defaultParams: PredictionInput = {}) {
   const queryClient = useQueryClient();
+  const [runId, setRunId] = useState(0);
+  const paramsRef = useRef<PredictionInput>(defaultParams);
 
-  const query = useQuery({
-    queryKey: ["prediction"],
-    queryFn: fetchPrediction,
-    enabled: false,   // manual trigger only
+  const query = useQuery<PredictionResult>({
+    queryKey: ["prediction", runId],
+    queryFn: () => fetchPrediction(paramsRef.current),
+    enabled: runId > 0,
     staleTime: 0,
     retry: 1,
   });
 
-  const runPrediction = async () => {
-    // Invalidate previous result so a fresh request is made
+  const runPrediction = async (overrides?: PredictionInput) => {
+    paramsRef.current = { ...defaultParams, ...overrides };
     await queryClient.invalidateQueries({ queryKey: ["prediction"] });
-    return query.refetch();
+    setRunId((id) => id + 1);
   };
 
   return { ...query, runPrediction };

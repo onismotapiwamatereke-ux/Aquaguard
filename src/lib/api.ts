@@ -1,4 +1,4 @@
-import type { SensorReading, SensorFormInput, PredictionResult } from "@/types";
+import type { SensorReading, SensorFormInput, PredictionResult, PredictionInput } from "@/types";
 
 const BASE_URL = "http://localhost:5000/api";
 
@@ -14,7 +14,6 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/** POST /api/sensor-data — ingest a new ESP32 / manual reading */
 export function postSensorData(data: SensorFormInput): Promise<SensorReading> {
   return request<SensorReading>("/sensor-data", {
     method: "POST",
@@ -22,15 +21,13 @@ export function postSensorData(data: SensorFormInput): Promise<SensorReading> {
   });
 }
 
-/** GET /api/history — fetch all stored sensor readings */
 export function fetchHistory(): Promise<SensorReading[]> {
   return request<SensorReading[]>("/history");
 }
 
-/**
- * GET /api/prediction — run the ML model on the latest sensor data.
- * Returns risk_level, probability, timestamp and top-3 SHAP explanations.
- */
-export function fetchPrediction(): Promise<PredictionResult> {
-  return request<PredictionResult>("/prediction");
+export function fetchPrediction(params: PredictionInput = {}): Promise<PredictionResult> {
+  return request<PredictionResult>("/prediction", {
+    method: "POST",
+    body: JSON.stringify(params),
+  });
 }

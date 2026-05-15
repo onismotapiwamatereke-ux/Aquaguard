@@ -55,7 +55,7 @@ export default function PredictionCard({ prediction }: PredictionCardProps) {
           {/* Probability bar */}
           <div className="card-glow rounded-xl p-5 space-y-3">
             <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase">
-              Outbreak Probability
+              Disease Outbreak Risk Score
             </p>
             <p className="text-4xl font-bold tabular-nums" style={{ color: col.hex }}>
               {formatProbability(prediction.probability)}
@@ -102,7 +102,7 @@ export default function PredictionCard({ prediction }: PredictionCardProps) {
         <div className="card-glow rounded-xl p-5 space-y-3">
           <p className="text-xs font-semibold tracking-widest text-muted-foreground uppercase flex items-center gap-1.5">
             <BarChart2 className="w-3.5 h-3.5" />
-            Model Explanation (SHAP)
+            What Influenced This Result
           </p>
           <ShapChart features={prediction.explanation} />
         </div>

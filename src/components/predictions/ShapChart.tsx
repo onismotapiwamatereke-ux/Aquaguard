@@ -66,7 +66,7 @@ export default function ShapChart({ features }: ShapChartProps) {
   return (
     <div className="space-y-2 animate-fade-in opacity-0">
       <p className="text-xs text-muted-foreground">
-        Top factors driving this prediction (SHAP values)
+        The top factors that most influenced this safety result
       </p>
       <ResponsiveContainer width="100%" height={data.length * 48 + 24}>
         <BarChart
